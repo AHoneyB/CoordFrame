@@ -15,12 +15,9 @@ class UI{
     mPressed = press;
   }
   
-
-  
    void setMRelesed(boolean relesed){
     mRelesed=relesed;
   }
-  
   
   void getMouseCoords(){
     mouseCoords.x = mouseX;

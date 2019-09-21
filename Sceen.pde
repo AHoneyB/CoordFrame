@@ -10,21 +10,24 @@ class Sceen {
   Sceen(PGraphicsJava2D renderer) {
     this.renderer = renderer;
     views = new View[2];
-    views[0] = new View(width*0.0, height*0.0, width*0.50, height*50, true);
-    views[1] = new View(width*0.50, height*0.10, width*0.4, height*0.4, true);
+    views[0] = new View(width*0.10, height*0.10, width*0.30, height*0.30, black, true);
+    views[1] = new View(width*0.50, height*0.5, width*0.4, height*0.45,blue,  true);
     points = new Points();
-  
   }
 
   void render() {
     if (ui.mPressed) {
-      for (int i=0;i<views.length;i++){
-      
+      for (int i=0; i<views.length; i++) {
+        if (views[i].mouseInViewBoundry(mouseX, mouseY)){
+        if (views[i].origin){
+        points.addPointAt(new PVector(mouseX-views[i].vX, mouseY-views[i].vY));
+        } 
+        else {
+          points.addPointAt(new PVector(mouseX, mouseY));
+        }
+        
+        }
       }
-      
-      points.addPointAt(new PVector(mouseX, mouseY));
-      
-      
     }
 
     if (ui.mRelesed) {
@@ -32,11 +35,10 @@ class Sceen {
     }
 
     // draw object to graphic 
-    views[0].render(renderer,points);
-    views[1].render(renderer,points);
-
-    views[0].renderBoundry();
-    views[1].renderBoundry();
+    for (int i=0; i<views.length; i++) {
+      views[i].render(renderer, points);
+      views[i].renderBoundry();
+    }
   }
 
   void boundBoundry(PVector pos) {

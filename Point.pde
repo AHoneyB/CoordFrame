@@ -30,14 +30,14 @@ class Point {
   void setVeiw() {
   }
 
-  void renderPoint(Veiw veiw) {
+  void renderPoint(PGraphicsJava2D rendererSceen,Veiw veiw) {
     this.veiw = veiw;
     if (veiw.inBounds(p)) {
-      pushStyle();
-      noStroke();
-      fill(c);
-      ellipse(p.x, p.y, 5, 5);
-      popStyle();
+      rendererSceen.pushStyle();
+      rendererSceen.noStroke();
+      rendererSceen.fill(c);
+      rendererSceen.ellipse(p.x, p.y, 5, 5);
+      rendererSceen.popStyle();
     }
   }
 }

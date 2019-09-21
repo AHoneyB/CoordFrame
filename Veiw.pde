@@ -1,37 +1,41 @@
 class Veiw {
-  float  vMinX, vMinY;
-  float  vMaxX, vMaxY;
+  float  vX, vWidth;
+  float  vY, vHeight;
 
   Veiw() {
-    vMinX =0;
-    vMinY =0;
-    vMaxX = width;
-    vMaxY = height;
+    vX =0;
+    vY =0;
+    vWidth = width;
+    vHeight = height;
   }
 
-  Veiw(float vMinX, float vMinY, float  vMaxX, float vMaxY ) {
-    this.vMinX= vMinX ;
-    this.vMinY =vMinY;
-    this.vMaxX = vMaxX;
-    this.vMaxY = vMaxY;
+  Veiw(float vX, float vY, float  vWidth, float vHeight ) {
+    this.vX= vX ;
+    this.vY =vY;
+    this.vWidth = vWidth;
+    this.vHeight = vHeight;
+  }
+  
+  void clipSceen(PGraphicsJava2D rendererSceen){
+    rendererSceen.clip(vX,vY,vWidth,vHeight);
   }
 
   boolean inBounds(PVector p) {
-    return (p.x>=vMinX && p.y>=vMinY && p.x<=vMaxX && p.y<=vMaxY);
+    return (p.x>=vX && p.y>=vY && p.x<=vX+vWidth && p.y<=vY+vHeight);
   }
 
   void renderBoundry() {
     pushStyle();
     noFill();
     stroke(red);
-    rect(vMinX, vMinY, vMaxX-vMinX, vMaxY-vMinY);
+    rect(vX,vY,vWidth,vHeight);
     popStyle();
   }
 
   void boundToBoundry(PVector p) {
-    if (p.x<vMinX) p.x = vMinX;
-    if (p.y<vMinY) p.y = vMinY;
-    if (p.x>vMaxX) p.x = vMaxX;
-    if (p.y>vMaxY) p.y = vMaxY;
+    if (p.x<vX) p.x = vX;
+    if (p.y<vY) p.y = vY;
+    if (p.x>vX+vWidth) p.x = vX+vWidth;
+    if (p.y>vY+vHeight) p.y = vY+vHeight;
   }
 }

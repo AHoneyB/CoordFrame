@@ -13,9 +13,9 @@ class Points{
     pointList.add(new Point(pos));
   }
   
-   void renderPointst(){
+   void renderPoints(PGraphicsJava2D rendererSceen){
     for (int i=0;i<pointList.size();i++){
-      pointList.get(i).renderPoint(veiw);
+      pointList.get(i).renderPoint(rendererSceen, veiw);
     }
   }
   

@@ -1,6 +1,5 @@
 class Point {
 
-  Veiw veiw;
   PVector p;
   color c;
 
@@ -27,17 +26,13 @@ class Point {
     p=pos;
   }
 
-  void setVeiw() {
+  void pointRender(PGraphicsJava2D rendererSceen){
+    rendererSceen.pushStyle();
+    rendererSceen.noStroke();
+    rendererSceen.fill(c);
+    rendererSceen.ellipse(p.x, p.y, 5, 5);
+    rendererSceen.popStyle();
   }
 
-  void renderPoint(PGraphicsJava2D rendererSceen,Veiw veiw) {
-    this.veiw = veiw;
-    if (veiw.inBounds(p)) {
-      rendererSceen.pushStyle();
-      rendererSceen.noStroke();
-      rendererSceen.fill(c);
-      rendererSceen.ellipse(p.x, p.y, 5, 5);
-      rendererSceen.popStyle();
-    }
-  }
+
 }

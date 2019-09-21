@@ -1,34 +1,48 @@
 class Sceen {
   PGraphicsJava2D renderer;
-  float  sMinX, sMinY;
-  float  sMaxX, sMaxY;
+  float  sMinX, sWidth;
+  float  sMinY, sHeight;
 
-  Veiw veiw1, veiw2;
-  Points points1;
-  Points points2;
+  View[] views;
+  Points points;
+
 
   Sceen(PGraphicsJava2D renderer) {
     this.renderer = renderer;
-    veiw1 = new Veiw(width*0.10, height*0.10, width*0.4, height*0.4);
-    veiw2 = new Veiw(width*0.50, height*0.10, width*0.9, height*0.9);
-    points1 = new Points(veiw1);
-    points2 = new Points(veiw2);
+    views = new View[2];
+    views[0] = new View(width*0.0, height*0.0, width*0.50, height*50, true);
+    views[1] = new View(width*0.50, height*0.10, width*0.4, height*0.4, true);
+    points = new Points();
+  
   }
 
   void render() {
     if (ui.mPressed) {
-      points1.addPointAt(new PVector(mouseX, mouseY));
-      points2.addPointAt(new PVector(mouseX, mouseY));
+      for (int i=0;i<views.length;i++){
+      
+      }
+      
+      points.addPointAt(new PVector(mouseX, mouseY));
+      
+      
     }
 
     if (ui.mRelesed) {
       ui.setMPressed(false);
     }
 
-    points1.renderPoints(renderer);
-    points2.renderPoints(renderer);
+    // draw object to graphic 
+    views[0].render(renderer,points);
+    views[1].render(renderer,points);
 
-    veiw1.renderBoundry();
-    veiw2.renderBoundry();
+    views[0].renderBoundry();
+    views[1].renderBoundry();
+  }
+
+  void boundBoundry(PVector pos) {
+    if (pos.x<sMinX) pos.x = sMinX;
+    if (pos.y<sMinY) pos.y = sMinY;
+    if (pos.x>sMinX+sWidth) pos.x = sMinX+sWidth;
+    if (pos.y>sMinY+sHeight) pos.y = sMinY+sHeight;
   }
 }

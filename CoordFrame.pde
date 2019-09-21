@@ -2,14 +2,10 @@ import processing.awt.PGraphicsJava2D;
 
 // Will allow access to the sketch's graphics renderer, g.
 PGraphicsJava2D renderer;
-
-
 UI ui;
 Sceen sceen;
-
 boolean[] pressed = new boolean[256];
 SysCoords coords;
-Veiw veiw;
 
 color black = color(0,0,0);
 color red = color(255,0,0);

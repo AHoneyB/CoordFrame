@@ -2,12 +2,11 @@ class View {
   float  vX, vWidth;
   float  vY, vHeight;
   float tx, ty;
-  boolean origin;
   color c;
   PGraphicsJava2D rendererSceen;
+  boolean focus;
 
-  View(boolean origin,color c) {
-    this.origin = origin;
+  View(color c) {
     this.c=c;
     vX =0;
     vY =0;
@@ -15,8 +14,7 @@ class View {
     vHeight = height;
   }
 
-  View(float vX, float vY, float  vWidth, float vHeight,color c, boolean origin ) {
-    this.origin = origin;
+  View(float vX, float vY, float  vWidth, float vHeight,color c) {
     this.c=c;
     this.vX= vX ;
     this.vY =vY;
@@ -31,22 +29,18 @@ class View {
 
   void renderObjects(Points points) {
     for (int i=0; i<points.pointList.size(); i++) {
-      renderObjectCliipedAt(points.pointList.get(i));
+      renderObjectClipedAt(points.pointList.get(i));
     }
   }
+  
+  PVector getVeiwMouseCoordsFor(float mx,float my){
+   return new PVector(mouseX-vX, mouseY-vY);
+  }
 
-  void renderObjectCliipedAt(Point point) {
-   
-    if (origin) {
+  void renderObjectClipedAt(Point point) {
       rendererSceen.clip(vX, vY, vWidth, vHeight);
       VeiwToOrigin(point);
-       rendererSceen.noClip();
-    } else {
-      rendererSceen.clip(vX, vY, vWidth, vHeight);
-      point.pointRender(rendererSceen,c);
       rendererSceen.noClip();
-    }
-
   }
 
   void VeiwToOrigin(Point point) {
@@ -60,6 +54,7 @@ class View {
     pushStyle();
     noFill();
     stroke(red);
+    if (focus) strokeWeight(3); else strokeWeight(1);
     rect(vX, vY, vWidth, vHeight);
     popStyle();
   }
@@ -67,4 +62,5 @@ class View {
   boolean mouseInViewBoundry(float x,float y){
     return (x>vX && x<(vX+vWidth) && y>vY && y<(vY+vHeight));
   }
-}
+  
+  }

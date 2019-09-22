@@ -10,20 +10,26 @@ class Sceen {
 
   Sceen(PGraphicsJava2D renderer) {
     this.renderer = renderer;
+    sMinX= -2000; sMinY =-2000;
+    sWidth = 4000; sHeight = 4000;
     views = new View[2];
     views[0] = new View(width*0.10, height*0.10, width*0.30, height*0.30, black);
     views[1] = new View(width*0.50, height*0.5, width*0.4, height*0.45, blue);
     points = new Points();
   }
+  
+  
 
   void render() {
   // Render all views
+    
+  
+  
     for (int i=0; i<views.length; i++) {
       if (views[i].mouseInViewBoundry(mouseX, mouseY)) {
         views[i].focus =true;
         if (ui.mPressed) {
-           views[i].getVeiwMouseCoordsFor(mouseX,mouseY);
-          PVector mouseCoords = new PVector(mouseX-views[i].vX, mouseY-views[i].vY);
+          PVector mouseCoords = views[i].getMouseCoordsFor(mouseX,mouseY);
           points.addPointAt(new PVector(mouseCoords.x,mouseCoords.y));
         }
       } else {

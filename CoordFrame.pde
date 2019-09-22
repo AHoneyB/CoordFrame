@@ -4,7 +4,7 @@ import processing.awt.PGraphicsJava2D;
 PGraphicsJava2D renderer;
 UI ui;
 Sceen sceen;
-boolean[] pressed = new boolean[256];
+
 SysCoords coords;
 
 color black = color(0,0,0);
@@ -36,13 +36,9 @@ void mouseReleased(){
 }
 
 void keyPressed() {
-  pressed[keyCode] = true;
+  ui.pressed[keyCode] = true;
 }
 
 void keyReleased() {
-  pressed[keyCode] = false;
-}
-
-boolean[] getPressedArray(){
-  return pressed;
+  ui.pressed[keyCode] = false;
 }

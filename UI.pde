@@ -3,12 +3,11 @@ class UI{
   PApplet app;
   PVector mouseCoords;
   boolean mPressed, mRelesed;
-  boolean[] pressed;
+  boolean[] pressed = new boolean[256];
 
   UI(PApplet papp){
     app=papp;
     mouseCoords = new  PVector(mouseX,mouseY);
-    getKeyPressed();
   }
   
   void setMPressed(boolean press){
@@ -25,8 +24,7 @@ class UI{
   }
   
   void getKeyPressed(){
-    this.pressed = getPressedArray();
+  
   }
-
-
+  
 }

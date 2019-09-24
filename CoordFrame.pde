@@ -2,14 +2,9 @@ import processing.awt.PGraphicsJava2D;
 
 // Will allow access to the sketch's graphics renderer, g.
 PGraphicsJava2D renderer;
-
-
 UI ui;
 Sceen sceen;
 
-boolean[] pressed = new boolean[256];
-SysCoords coords;
-Veiw veiw;
 
 color black = color(0,0,0);
 color red = color(255,0,0);
@@ -18,7 +13,7 @@ color orange = color(255,180,100);
 color yellow = color(255,255,0);
 
 void setup(){
-  size(800, 800, JAVA2D);
+  size(1000, 700, JAVA2D);
   renderer = (PGraphicsJava2D)g;
   ui = new UI(this);
   sceen = new Sceen(renderer);
@@ -40,13 +35,9 @@ void mouseReleased(){
 }
 
 void keyPressed() {
-  pressed[keyCode] = true;
+  ui.pressed[keyCode] = true;
 }
 
 void keyReleased() {
-  pressed[keyCode] = false;
-}
-
-boolean[] getPressedArray(){
-  return pressed;
+  ui.pressed[keyCode] = false;
 }

@@ -14,6 +14,29 @@ class Sceen {
     points1 = new Points(veiw1);
     points2 = new Points(veiw2);
   }
+<<<<<<< Updated upstream
+=======
+  
+ 
+  void render() {
+  // Render all views
+    for (int i=0; i<views.length; i++) { 
+      if (views[i].mouseInViewBoundry(mouseX, mouseY)) {
+        views[i].focus =true;
+        if (ui.mPressed) {
+          PVector mC = views[i].getMouseCoordsFor(mouseX,mouseY); 
+          if (!points.testPointsforSelected(mC)){
+           // points always added in veiw coordintee space 
+            points.addPointAt(mC);
+          }
+          
+         
+        }
+      } else {
+        views[i].focus =false;
+      }
+  // End of Render all views
+>>>>>>> Stashed changes
 
   void render() {
     if (ui.mPressed) {

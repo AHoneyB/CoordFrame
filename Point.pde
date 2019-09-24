@@ -2,7 +2,12 @@ class Point {
 
   Veiw veiw;
   PVector p;
+<<<<<<< Updated upstream
   color c;
+=======
+  boolean selected;
+
+>>>>>>> Stashed changes
 
   Point() {
     p = new PVector(9, 9);
@@ -26,6 +31,7 @@ class Point {
   void setPointAt(PVector pos) {
     p=pos;
   }
+<<<<<<< Updated upstream
 
   void setVeiw() {
   }
@@ -40,4 +46,12 @@ class Point {
       rendererSceen.popStyle();
     }
   }
+=======
+  
+  float distanceTo(PVector q){
+    float dx =p.x-q.x;
+    float dy =p.y-q.y;
+   return sqrt(dx*dx+dy*dy);
+  } 
+>>>>>>> Stashed changes
 }

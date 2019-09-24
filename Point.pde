@@ -18,14 +18,4 @@ class Point {
   void setPointAt(PVector pos) {
     p=pos;
   }
-
-  void pointRender(PGraphicsJava2D rendererSceen,color c){
-    rendererSceen.pushStyle();
-    rendererSceen.noStroke();
-    rendererSceen.fill(c);
-    rendererSceen.ellipse(p.x, p.y, 5, 5);
-    rendererSceen.popStyle();
-  }
-
-
 }

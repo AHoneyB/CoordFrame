@@ -1,8 +1,8 @@
 class Sceen {
 
   PGraphicsJava2D renderer;
-  float  sMinX, sWidth;
-  float  sMinY, sHeight;
+  float  sX, sWidth;
+  float  sY, sHeight;
 
   View[] views;
   Points points;
@@ -10,32 +10,33 @@ class Sceen {
 
   Sceen(PGraphicsJava2D renderer) {
     this.renderer = renderer;
-    sMinX= -2000; sMinY =-2000;
-    sWidth = 4000; sHeight = 4000;
+    sX= 0; sY =0;
+    sWidth = 400; sHeight =400;
     views = new View[2];
-    views[0] = new View(width*0.10, height*0.10, width*0.30, height*0.30, black);
-    views[1] = new View(width*0.50, height*0.5, width*0.4, height*0.45, blue);
+   views[0] = new View(this, 10, 10, 200, 200, black);
+    views[1] = new View(this,10, 220, 400, 400, blue);
+   
     points = new Points();
   }
   
-  
-
+ 
   void render() {
   // Render all views
-    
-  
-  
-    for (int i=0; i<views.length; i++) {
+    for (int i=0; i<views.length; i++) { 
       if (views[i].mouseInViewBoundry(mouseX, mouseY)) {
         views[i].focus =true;
         if (ui.mPressed) {
-          PVector mouseCoords = views[i].getMouseCoordsFor(mouseX,mouseY);
-          points.addPointAt(new PVector(mouseCoords.x,mouseCoords.y));
+          PVector mC = views[i].getMouseCoordsFor(mouseX,mouseY);
+          
+          points.addPointAt(new PVector(mC.x,mC.y));
         }
       } else {
         views[i].focus =false;
       }
   // End of Render all views
+
+      if (views[i].focus)
+        views[i].translateView();
 
       if (ui.mRelesed) {
         ui.setMPressed(false);
@@ -47,10 +48,10 @@ class Sceen {
     }
   }
 
-  void boundBoundry(PVector pos) {
-    if (pos.x<sMinX) pos.x = sMinX;
-    if (pos.y<sMinY) pos.y = sMinY;
-    if (pos.x>sMinX+sWidth) pos.x = sMinX+sWidth;
-    if (pos.y>sMinY+sHeight) pos.y = sMinY+sHeight;
-  }
+  //void boundBoundry(PVector pos) {
+  //  if (pos.x<sX) pos.x = sX;
+  //  if (pos.y<sY) pos.y = sY;
+  //  if (pos.x>sX+sWidth) pos.x = sX+sWidth;
+  //  if (pos.y>sY+sHeight) pos.y = sY+sHeight;
+  //}
 }

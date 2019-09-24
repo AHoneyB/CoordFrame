@@ -14,7 +14,7 @@ color orange = color(255,180,100);
 color yellow = color(255,255,0);
 
 void setup(){
-  size(600, 600, JAVA2D);
+  size(1000, 700, JAVA2D);
   renderer = (PGraphicsJava2D)g;
   ui = new UI(this);
   sceen = new Sceen(renderer);

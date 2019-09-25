@@ -1,6 +1,5 @@
 class View {
-  float  vX, vWidth;
-  float  vY, vHeight;
+  Rectangle rect;
   float tX, tY;
   color c;
   PGraphicsJava2D rendererSceen;
@@ -10,21 +9,16 @@ class View {
   View(Sceen sceen, color c) {
     this.sceen = sceen;
     this.c=c;
-    vX =0;
-    vY =0;
-    vWidth = width;
-    vHeight = height;
+    rect = new Rectangle(0,0,width,height);
     tX = 0; 
     tY = 0 ;
   }
 
-  View(Sceen sceen, float vX, float vY, float  vWidth, float vHeight, color c) {
+  View(Sceen sceen, Rectangle rect, color c) {
     this.sceen = sceen;
     this.c=c;
-    this.vX= vX ;
-    this.vY =vY;
-    this.vWidth = vWidth;
-    this.vHeight = vHeight;
+    this.rect =rect;
+    rect = new Rectangle(0,0,width,height);
     tX = 0; 
     tY = 0 ;
   }
@@ -32,8 +26,8 @@ class View {
   //  --- MOUSE ---
 
   PVector getMouseCoordsFor(float mx, float my) {
-    float xM = mx-vX-tX;
-    float yM = my-vY-tY;
+    float xM = mx-rect.x-tX;
+    float yM = my-rect.y-tY;
     return new PVector(xM, yM);
   }
 
@@ -46,7 +40,7 @@ class View {
   }
 
   void renderObjectClipedAt(Point point) {
-    rendererSceen.clip(vX, vY, vWidth, vHeight);
+    rendererSceen.clip(rect.x, rect.y, rect.w, rect.h);
     VeiwToOrigin(point);
     rendererSceen.noClip();
   }
@@ -55,7 +49,7 @@ class View {
     pushStyle();
     noFill();
     stroke(orange);
-    rect(vX, vY, sceen.sWidth, sceen.sHeight);
+    rect(rect.x, rect.y, sceen.rect.w, sceen.rect.h);
     popStyle();
   }
 
@@ -75,7 +69,7 @@ class View {
       rendererSceen.fill(c);
     }
     
-    rendererSceen.ellipse(vX+point.p.x, vY+point.p.y, 5, 5);
+    rendererSceen.ellipse(rect.x+point.p.x, rect.y+point.p.y, 10, 10);
     rendererSceen.popStyle();
     rendererSceen.popMatrix();
   }
@@ -87,12 +81,12 @@ class View {
     stroke(red);
     if (focus) strokeWeight(3); 
     else strokeWeight(1);
-    rect(vX, vY, vWidth, vHeight);
+    rect(rect.x, rect.y, rect.w, rect.h);
     popStyle();
   }
 
   boolean mouseInViewBoundry(float x, float y) {
-    return (x>vX && x<(vX+vWidth) && y>vY && y<(vY+vHeight));
+    return (x>rect.x && x<(rect.x+rect.w) && y>rect.y && y<(rect.y+rect.w));
   }
 
   void translateView() {

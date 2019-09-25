@@ -8,15 +8,6 @@ class View {
   boolean focus;
   Sceen sceen;
 
-  View(Sceen sceen, color c) {
-    this.sceen = sceen;
-    this.c=c;
-    tX =0; 
-    tY =0;
-    origin = new PVector(viewRect.x+sceen.rect.w/2+tX, viewRect.y+sceen.rect.h/2+tY);
-    rot =0;
-  }
-
   View(Sceen sceen, Rectangle viewRect, color c) {
     this.sceen = sceen;
     this.c=c;
@@ -27,7 +18,7 @@ class View {
     rot =0;
   }
 
-  //  --- MOUSE ---
+  //  --- MOUSE VIEW ---
 
   PVector getMouseCoordsFor(float mx, float my) {
     // TRANSFORM MOUSE COORDS
@@ -38,8 +29,19 @@ class View {
 
     return new PVector(xM, yM);
   }
+  
+  // DRAW VIEW BOUNDRY
+  void renderBoundry() {
+    pushStyle();
+    noFill();
+    stroke(red);
+    if (focus) strokeWeight(3); 
+    else strokeWeight(1);
+    rect(viewRect.x, viewRect.y, viewRect.w, viewRect.h);
+    popStyle();
+  }
 
-  // DRAW SCEEN RECT
+  // DRAW SCEEN RECT IN ViEW
   void renderSceen(PGraphicsJava2D rendererSceen) {
     this.rendererSceen = rendererSceen;
     rendererSceen.clip(viewRect.x, viewRect.y, viewRect.w, viewRect.h);
@@ -60,22 +62,22 @@ class View {
     rendererSceen.popMatrix();
   }
 
-  // DRAW POINTS
-  void renderPoints(PGraphicsJava2D rendererSceen, Points points) {
+  // DRAW OBJECTS IN VIEW
+  void renderObjects(PGraphicsJava2D rendererSceen, DObjectList obj) {
     this.rendererSceen = rendererSceen;
 
-    for (int i=0; i<points.pointList.size(); i++) {
-      renderObjectClipedAt(points.pointList.get(i));
+    for (int i=0; i<obj.objList.size(); i++) {
+      renderObjectClipedAt(obj.objList.get(i));
     }
   }
 
-  void renderObjectClipedAt(Point point) {
+  void renderObjectClipedAt(DObject point) {
     rendererSceen.clip(viewRect.x, viewRect.y, viewRect.w, viewRect.h);
     pointRender(point);
     rendererSceen.noClip();
   }
 
-  void pointRender(Point point) {
+  void pointRender(DObject point) {
 
     rendererSceen.pushMatrix();
 
@@ -92,22 +94,13 @@ class View {
     } else {
       rendererSceen.fill(c);
     }
-
-    rendererSceen.ellipse(point.p.x, point.p.y, 10, 10);
+    point.renderPoint(rendererSceen);
     rendererSceen.popStyle();
     rendererSceen.popMatrix();
   }
 
 
-  void renderBoundry() {
-    pushStyle();
-    noFill();
-    stroke(red);
-    if (focus) strokeWeight(3); 
-    else strokeWeight(1);
-    rect(viewRect.x, viewRect.y, viewRect.w, viewRect.h);
-    popStyle();
-  }
+  
 
   boolean mouseInViewBoundry(float x, float y) {
     return (x>viewRect.x && x<(viewRect.x+viewRect.w) && y>viewRect.y && y<(viewRect.y+viewRect.w));

@@ -3,7 +3,7 @@ class Sceen {
   PGraphicsJava2D renderer;
   Rectangle rect;
   View[] views;
-  Points points;
+  DObjectList points;
   Button drawPointButton;
   Button deletePointButton;
   Button saveButton;
@@ -25,7 +25,7 @@ class Sceen {
     views[0] = new View(this, new Rectangle(100, 10, 200, 200), black);
     views[1] = new View(this, new Rectangle(100, 220, 600, 500), blue);
 
-    points = new Points();
+    points = new DObjectList();
   }
 
   void buttonrender() {
@@ -81,7 +81,7 @@ class Sceen {
 
       // draw object to graphic 
       views[i].renderSceen(renderer);
-      views[i].renderPoints(renderer, points);
+      views[i].renderObjects(renderer, points);
       views[i].renderBoundry();
     } // End of Render all views
   }

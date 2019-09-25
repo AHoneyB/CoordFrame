@@ -58,9 +58,10 @@ class Sceen {
       }
       // End of Render all views
 
-      if (views[i].focus)
+      if (views[i].focus){
         views[i].translateView();
-
+        views[i].rotateView();
+      }
 
       if (ui.mRelesed) {
         ui.setMPressed(false);

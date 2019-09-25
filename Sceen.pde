@@ -4,8 +4,10 @@ class Sceen {
   Rectangle rect;
   View[] views;
   Points points;
-  Button drawPoint;
-  Button deletePoint;
+  Button drawPointButton;
+  Button deletePointButton;
+  Button saveButton;
+  Button loadButton;
   UI ui;
 
   Sceen(PGraphicsJava2D renderer, UI ui) {
@@ -13,29 +15,39 @@ class Sceen {
     this.renderer = renderer;
     rect = new Rectangle(0, 0, 400, 400);
     // BUTTONS
-    drawPoint = new Button( ui, new Rectangle(5, 5, 50, 50), orange);
-    deletePoint = new Button( ui, new Rectangle(5, 55, 50, 50), red);
-    drawPoint.selected = true; 
+    drawPointButton = new Button( ui, new Rectangle(5, 5, 50, 50), red);
+    deletePointButton = new Button( ui, new Rectangle(5, 55, 50, 50), orange);
+    saveButton = new Button( ui, new Rectangle(5, 105, 50, 50), green);
+    drawPointButton.selected = true; 
+
+    // VIEWS
     views = new View[2];
     views[0] = new View(this, new Rectangle(100, 10, 200, 200), black);
-    views[1] = new View(this, new Rectangle(100, 220, 400, 300), blue);
+    views[1] = new View(this, new Rectangle(100, 220, 600, 500), blue);
 
     points = new Points();
   }
 
+  void buttonrender() {
+    drawPointButton.mouseButtonControl();
+    if (drawPointButton.selected) deletePointButton.selected =false;
+    else deletePointButton.selected =true;
+    deletePointButton.mouseButtonControl();
+    if (deletePointButton.selected) drawPointButton.selected =false;
+    else drawPointButton.selected =true;
+
+    drawPointButton.renderButton();
+    deletePointButton.renderButton();
+    saveButton.mouseButtonControl();
+    saveButton.renderButton();
+  }
 
   void render() {
-    // Render all views
-    drawPoint.mouseButtonControl();
-    if (drawPoint.selected) deletePoint.selected =false;
-    else deletePoint.selected =true;
-    deletePoint.mouseButtonControl();
-    if (deletePoint.selected) drawPoint.selected =false;
-    else drawPoint.selected =true;
     
-    drawPoint.renderButton();
-    deletePoint.renderButton();
+    // DRAW BUTTONS
+    buttonrender();
 
+    // DRAW VIEWS
     for (int i=0; i<views.length; i++) { 
       if (views[i].mouseInViewBoundry(mouseX, mouseY)) {
         views[i].focus =true;
@@ -43,22 +55,22 @@ class Sceen {
           PVector mC = views[i].getMouseCoordsFor(mouseX, mouseY);
           points.testPointsforSelected(mC);
 
-          if (drawPoint.selected) {
+          if (drawPointButton.selected) {
             if (!points.testPointsforSelected(mC)) {
               points.addPointAt(new PVector(mC.x, mC.y));
             }
           }
 
-          if (deletePoint.selected) {
+          if (deletePointButton.selected) {
             points.deletedSelected();
           }
         } // end of mouse pressed
       } else {
         views[i].focus =false;
-      }
-      // End of Render all views
+      } // End of mouse in view
+      
 
-      if (views[i].focus){
+      if (views[i].focus) {
         views[i].translateView();
         views[i].rotateView();
       }
@@ -68,8 +80,9 @@ class Sceen {
       }
 
       // draw object to graphic 
-      views[i].render(renderer, points);
+      views[i].renderSceen(renderer);
+      views[i].renderPoints(renderer, points);
       views[i].renderBoundry();
-    }
+    } // End of Render all views
   }
 }

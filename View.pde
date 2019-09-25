@@ -1,6 +1,8 @@
 class View {
   Rectangle rect;
+  PMatrix2D T;
   float tX, tY;
+  float rot;
   color c;
   PGraphicsJava2D rendererSceen;
   boolean focus;
@@ -10,8 +12,11 @@ class View {
     this.sceen = sceen;
     this.c=c;
     rect = new Rectangle(0,0,width,height);
+    T.set( 1.0, 0.0, 0.0,
+           0.0, 1.0, 0.0);
     tX = 0; 
     tY = 0 ;
+    rot =0;
   }
 
   View(Sceen sceen, Rectangle rect, color c) {
@@ -19,8 +24,11 @@ class View {
     this.c=c;
     this.rect =rect;
     rect = new Rectangle(0,0,width,height);
+    T.set( 1.0, 0.0, 0.0,
+           0.0, 1.0, 0.0);
     tX = 0; 
     tY = 0 ;
+    rot =0;
   }
 
   //  --- MOUSE ---

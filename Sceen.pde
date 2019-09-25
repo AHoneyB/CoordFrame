@@ -13,8 +13,8 @@ class Sceen {
     this.renderer = renderer;
     rect = new Rectangle(0, 0, 400, 400);
     // BUTTONS
-    drawPoint = new Button( ui, new Rectangle(5, 5, 50, 50),orange);
-    deletePoint = new Button( ui, new Rectangle(5, 55, 50, 50),red);
+    drawPoint = new Button( ui, new Rectangle(5, 5, 50, 50), orange);
+    deletePoint = new Button( ui, new Rectangle(5, 55, 50, 50), red);
     drawPoint.selected = true; 
     views = new View[2];
     views[0] = new View(this, new Rectangle(100, 10, 200, 200), black);
@@ -26,6 +26,13 @@ class Sceen {
 
   void render() {
     // Render all views
+    drawPoint.mouseButtonControl();
+    if (drawPoint.selected) deletePoint.selected =false;
+    else deletePoint.selected =true;
+    deletePoint.mouseButtonControl();
+    if (deletePoint.selected) drawPoint.selected =false;
+    else drawPoint.selected =true;
+    
     drawPoint.renderButton();
     deletePoint.renderButton();
 
@@ -37,15 +44,13 @@ class Sceen {
           points.testPointsforSelected(mC);
 
           if (drawPoint.selected) {
-             if (!points.testPointsforSelected(mC)) {
-                 points.addPointAt(new PVector(mC.x, mC.y));
-              } 
-            
+            if (!points.testPointsforSelected(mC)) {
+              points.addPointAt(new PVector(mC.x, mC.y));
+            }
           }
-         
+
           if (deletePoint.selected) {
             points.deletedSelected();
-            
           }
         } // end of mouse pressed
       } else {

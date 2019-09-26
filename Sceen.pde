@@ -12,15 +12,15 @@ class Sceen {
   UI ui;
 
   Sceen(PGraphicsJava2D renderer, UI ui) {
-    
+
     this.ui =ui;
     this.renderer = renderer;
     rect = new Rectangle(0, 0, 400, 400);
     // BUTTONS
-    drawPointButton = new Button( ui,      new Rectangle(5, 5, 50, 50), red);
-    deletePointButton = new Button( ui,    new Rectangle(5, 55, 50, 50), orange);
-    saveButton = new Button( ui,           new Rectangle(5, 105, 50, 50), green);
-    velocityButton = new Button( ui,       new Rectangle(5, 155, 50, 50), blue);
+    drawPointButton = new Button( ui, new Rectangle(5, 5, 50, 50), red);
+    deletePointButton = new Button( ui, new Rectangle(5, 55, 50, 50), orange);
+    saveButton = new Button( ui, new Rectangle(5, 105, 50, 50), green);
+    velocityButton = new Button( ui, new Rectangle(5, 155, 50, 50), blue);
     drawPointButton.selected = true; 
 
     // VIEWS
@@ -34,7 +34,7 @@ class Sceen {
   void buttonrender() {
     drawPointButton.mouseButtonControl();
     if (drawPointButton.selected) deletePointButton.selected =false;
-  
+
     if (!drawPointButton.selected)
       deletePointButton.mouseButtonControl();
 
@@ -47,8 +47,9 @@ class Sceen {
     velocityButton.renderButton();
   }
 
+  // MAIN DRAW SCEEN 
   void render() {
-    
+    DObject lastSelected= null;
     // DRAW BUTTONS
     buttonrender();
 
@@ -56,23 +57,31 @@ class Sceen {
     for (int i=0; i<views.length; i++) { 
       if (views[i].mouseInViewBoundry(mouseX, mouseY)) {
         views[i].focus =true;
-     
-         // MOUSE PRESSED
+
+        // MOUSE PRESSED
         if (ui.mPressed) {
           PVector mC = views[i].getMouseCoordsFor(mouseX, mouseY);
-         
+
+          // ADD VELOCITY VECTOR
+          if (velocityButton.selected && !drawPointButton.selected && lastSelected!=null) {
+            if (ui.pressed[16]) { // [16] SHIFT
+              lastSelected.setVelocity(mC);
+            }
+            //println("Add vel");
+          } else {
+            //println("Don't Add vel");
+          }
+
           // SELECT ONJECT
           ArrayList<DObject>  selectedPoints = points.testPointsforSelected(mC);
-          
-          if (velocityButton.selected && !drawPointButton.selected && selectedPoints.size()>0){
-            DObject pointGetVel=selectedPoints.get(selectedPoints.size()-1);
-            //println("Add vel");
+          if (selectedPoints.size()>0) {
+            lastSelected = selectedPoints.get(selectedPoints.size()-1);
           }
-          else {
-          //println("Don't Add vel");
-          }
-          
-          
+
+
+
+
+
 
           if (drawPointButton.selected) {
             if (selectedPoints.size()<=0) {
@@ -83,13 +92,11 @@ class Sceen {
           if (deletePointButton.selected) {
             points.deletedSelected();
           }
-         
         } // END OF MOUSE PRESSED
-        
       } else {
         views[i].focus =false;
       } // End of mouse in view
-      
+
 
       if (views[i].focus) {
         views[i].translateView();

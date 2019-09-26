@@ -25,6 +25,16 @@ class DObjectList {
     }
   }
 
+  boolean closeTo(PVector mC) {
+    boolean close = false;
+    for (int i=0; i<objList.size(); i++) {
+      DObject point = objList.get(i);
+      if (point.distanceTo(mC)<sensivity)
+        close =true;
+    }
+    return close;
+  }
+
 
   ArrayList<DObject> testPointsforSelected(PVector mC) {
     selectedPoints.clear();

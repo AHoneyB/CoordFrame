@@ -34,14 +34,13 @@ class Button {
   }
 
 
-  void mouseButtonControl() {
+  void mouseFocus() {
     if (!disable) {
       if (overButton(mouseX, mouseY)) { 
         focus = true;
       } else {
         focus = false;
       }
-      pushed();
     }
   }
 
@@ -54,14 +53,14 @@ class Button {
     fill(backGround);
     rect(0, 0, rectButton.w, rectButton.h);
 
-    
-      if (selected) {
-        fill(c);
-        rect(3, 3, rectButton.w-6, rectButton.h-6);
-      } else {
-        noFill();
-      }
-   
+
+    if (selected) {
+      fill(c);
+      rect(3, 3, rectButton.w-6, rectButton.h-6);
+    } else {
+      noFill();
+    }
+
 
 
     if (focus) {
@@ -77,7 +76,7 @@ class Button {
     popMatrix();
   }
 
-  void pushed() {
+  void toggle() {
     if (focus && ui.mPressed) {
       if (!selected && (millis()-msTimeI)>200) {
         msTimeI = millis();
@@ -88,6 +87,11 @@ class Button {
         selected =false;
       }
     }
+  }
+
+  boolean pushed() {
+    return (focus && ui.mPressed);
+      
   }
 
   boolean getSelected() {

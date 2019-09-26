@@ -26,7 +26,7 @@ class DVector extends PVector{
     
     this.c = c;
     if (mag()>2)  {
-      strokeWeight(2);
+      strokeWeight(3);
       stroke(c);
       pointer(renderer,pos.x, pos.y,pos.x+x,pos.y+y);
     }

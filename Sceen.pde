@@ -4,13 +4,13 @@ class Sceen {
   Rectangle rect;
   View[] views;
   DObjectList points;
-  Button drawPointButton;
-  Button deletePointButton;
-  Button saveButton;
-  Button loadButton;
-  Button velocityButton;
   DObject lastSelected= null;
   UI ui;
+  ButtonPanel buttonPanel;
+  Button addPointButton ;
+  Button deletePointButton ;
+  Button selectButton ;
+  Button velocityButton ;
 
   Sceen(PGraphicsJava2D renderer, UI ui) {
 
@@ -18,12 +18,8 @@ class Sceen {
     this.renderer = renderer;
     rect = new Rectangle(0, 0, 400, 400);
     // BUTTONS
-    drawPointButton = new Button( ui, new Rectangle(5, 5, 50, 50), red);
-    deletePointButton = new Button( ui, new Rectangle(5, 55, 50, 50), orange);
-    saveButton = new Button( ui, new Rectangle(5, 105, 50, 50), green);
-    velocityButton = new Button( ui, new Rectangle(5, 155, 50, 50), blue);
-    drawPointButton.selected = true; 
-
+    buttonPanel = new ButtonPanel(ui);
+    setupButtonPanel();
     // VIEWS
     views = new View[2];
     views[0] = new View(this, new Rectangle(100, 10, 200, 200), black);
@@ -32,30 +28,29 @@ class Sceen {
     points = new DObjectList();
   }
 
-  void buttonrender() {
-    drawPointButton.mouseButtonControl();
-    if (drawPointButton.selected) deletePointButton.selected =false;
-
-    if (!drawPointButton.selected)
-      deletePointButton.mouseButtonControl();
-
-
-    drawPointButton.renderButton();
-    deletePointButton.renderButton();
-    saveButton.mouseButtonControl();
-    saveButton.renderButton();
-    velocityButton.mouseButtonControl();
-    velocityButton.renderButton();
+  void setupButtonPanel() {
+    addPointButton = new Button( ui, new Rectangle(5, 5, 50, 50), red);
+    deletePointButton = new Button( ui, new Rectangle(5, 55, 50, 50), orange);
+    selectButton = new Button( ui, new Rectangle(5, 105, 50, 50), green);
+    velocityButton = new Button( ui, new Rectangle(5, 155, 50, 50), blue);
+    addPointButton.selected = true; 
+    buttonPanel.add(addPointButton);
+    buttonPanel.add(deletePointButton);
+    buttonPanel.add(selectButton);
+    buttonPanel.add(velocityButton);
   }
+
+
 
   // MAIN DRAW SCEEN 
   void render() {
 
-    ArrayList<DObject> selectedPoints;
+    ArrayList<DObject> selectedPoints = null;
 
     // DRAW BUTTONS
-    buttonrender();
-
+    buttonPanel.buttonrender();
+    buttonPanel.buttonPushed();
+    
     // DRAW VIEWS
     for (int i=0; i<views.length; i++) { 
       if (views[i].mouseInViewBoundry(mouseX, mouseY)) {
@@ -64,36 +59,43 @@ class Sceen {
         // MOUSE PRESSED
         if (ui.mPressed) {
           PVector mC = views[i].getMouseCoordsFor(mouseX, mouseY);
-     
+
+
+
           // ADD VELOCITY VECTOR
           if (ui.pressed[16] && lastSelected!=null) // [16] = SHIFT
           {
-            if (velocityButton.selected && !drawPointButton.selected)
+            if (velocityButton.selected)
             { 
               lastSelected.setVelocity((mC.sub(lastSelected.pos)));
             }
-          } else {
+          }
 
-            // SELECT OBJECT
+          // SELECT OBJECT
+          if (selectButton.selected || deletePointButton.selected) {
+           if (ui.pressed[16] && lastSelected!=null ) {
+           
+                  lastSelected.setPointAt(mC);
+            }
             selectedPoints = points.testPointsforSelected(mC);
             if (selectedPoints.size()>0) {
               lastSelected = selectedPoints.get(selectedPoints.size()-1);
             }
-            // ADD OBJECT
-            if (drawPointButton.selected) {
-              if (!ui.pressed[81]) {
-                if (selectedPoints.size()<=0) {
-                  points.addPointAt(new PVector(mC.x, mC.y));
-                }
-              } else {
-                if (lastSelected!=null) 
-                  lastSelected.setPointAt(mC);
-              }
-            } 
+
+            // DELETE OBJECT
             if (deletePointButton.selected) {
               points.deletedSelected();
             }
           }
+
+          // ADD OBJECT
+          if (addPointButton.selected) {
+            if (selectedPoints==null && !points.closeTo(mC)) {
+              points.addPointAt(new PVector(mC.x, mC.y));
+            } 
+          }
+          
+          
         } // END OF MOUSE PRESSED
       } else {
         views[i].focus =false;

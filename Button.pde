@@ -3,7 +3,7 @@ class Button {
   Rectangle rectButton;
   String stringButton;
   boolean focus, selected;
-  boolean disable;
+  boolean disable, toggleAble;
   UI ui;
   int msTimeI;
   color c;
@@ -77,7 +77,6 @@ class Button {
   }
 
   void toggle() {
-    if (focus && ui.mPressed) {
       if (!selected && (millis()-msTimeI)>200) {
         msTimeI = millis();
         selected =true;
@@ -86,7 +85,6 @@ class Button {
         msTimeI = millis();
         selected =false;
       }
-    }
   }
 
   boolean pushed() {

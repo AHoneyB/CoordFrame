@@ -2,7 +2,7 @@ class ButtonPanel {
 
   ArrayList<Button> buttonList;
   UI ui;
-  int currentPress;
+  int lastedPress;
 
   ButtonPanel(UI ui) {
     this.ui = ui;
@@ -23,12 +23,15 @@ class ButtonPanel {
   void buttonPushed() {
     for (int i=0; i<buttonList.size(); i++) {
       Button b =buttonList.get(i); 
-        if (b.pushed()){
-          b.selected = true;
-          currentPress =i;
-        } else {
-        if (i!=currentPress) b.selected = false;
+      Button l = buttonList.get(lastedPress);
+      if (b.pushed()) {
+         b.toggle();
+        if (lastedPress!=i && !b.toggleAble) {
+          l.selected = false;
+          lastedPress =i;
+          b.toggle();
         }
-    }
+      } // End Pushed
+    } //End loop
   }
 }

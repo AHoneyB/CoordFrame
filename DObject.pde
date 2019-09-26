@@ -1,13 +1,11 @@
 class DObject {
 
   PVector pos;
+  ArrayList<DVector> obejctVectorlist;
+  boolean selected;
   //PVector vel;
   //PVector acc;
-  
-  ArrayList<DVector> obejctVectorlist;
-  
-  boolean selected;
-
+ 
   DObject() {
     pos = new PVector(0, 0);
     // ADD 1st vector for velocity

@@ -13,7 +13,6 @@ class Sceen {
   Button velocityButton ;
 
   Sceen(PGraphicsJava2D renderer, UI ui) {
-
     this.ui =ui;
     this.renderer = renderer;
     rect = new Rectangle(0, 0, 400, 400);
@@ -34,6 +33,7 @@ class Sceen {
     selectButton = new Button( ui, new Rectangle(5, 105, 50, 50), green);
     velocityButton = new Button( ui, new Rectangle(5, 155, 50, 50), blue);
     addPointButton.selected = true; 
+    selectButton.toggleAble = true; 
     buttonPanel.add(addPointButton);
     buttonPanel.add(deletePointButton);
     buttonPanel.add(selectButton);
@@ -59,8 +59,6 @@ class Sceen {
         // MOUSE PRESSED
         if (ui.mPressed) {
           PVector mC = views[i].getMouseCoordsFor(mouseX, mouseY);
-
-
 
           // ADD VELOCITY VECTOR
           if (ui.pressed[16] && lastSelected!=null) // [16] = SHIFT

@@ -2,7 +2,7 @@ class DObjectList {
 
   ArrayList<DObject> objList;
   ArrayList<DObject> selectedPoints;
-  float sensivity = 5;
+  float sensivity = 3;
 
   DObjectList() {
     objList = new ArrayList<DObject>();
@@ -26,17 +26,17 @@ class DObjectList {
   }
 
 
-  boolean testPointsforSelected(PVector mC) {
-    boolean selected = false;
+  ArrayList<DObject> testPointsforSelected(PVector mC) {
+    selectedPoints.clear();
     for (int i=0; i<objList.size(); i++) {
       DObject point = objList.get(i);
       if (point.distanceTo(mC)<sensivity) {
         point.selected=true;
-        selected =true;
+        selectedPoints.add(point);
       } else {
         point.selected=false;
       }
     }
-    return selected;
+    return selectedPoints;
   }
 }

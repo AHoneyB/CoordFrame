@@ -1,7 +1,10 @@
 class DObject {
 
   PVector pos;
-  PVector vel;
+  //PVector vel;
+  //PVector acc;
+  
+  ArrayList<DVector> obejctVectorlist;
   
   boolean selected;
 

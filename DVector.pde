@@ -1,19 +1,18 @@
 class DVector extends PVector{
 
   
-  PVector head;
+  //PVector head;
   color c;
   boolean selected;
   float seneitivity = 2.0;
   
   DVector() {
-   head = new PVector(0,0);
+   super(0,0);
    selected =false;
   }
 
   DVector(PVector v) { 
     super(v.x,v.y);
-    head = new PVector(v.x,v.y);
     selected =false;
   }
   
@@ -29,7 +28,7 @@ class DVector extends PVector{
     if (mag()>2)  {
       strokeWeight(2);
       stroke(c);
-      pointer(renderer,pos.x, pos.y,x,y);
+      pointer(renderer,pos.x, pos.y,pos.x+x,pos.y+y);
     }
   }
   
@@ -55,8 +54,7 @@ class DVector extends PVector{
  
  // select all colinear
   boolean selectedAt(PVector p) {
-    PVector l = head.copy(); 
-    l = head.copy();
+    PVector l = this.copy(); 
     PVector unitline = (l.copy()).normalize();
     PVector hyp = p.copy();
     PVector dy =unitline.mult(hyp.dot(unitline));  // line projection of mouse position

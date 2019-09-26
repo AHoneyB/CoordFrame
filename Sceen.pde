@@ -50,7 +50,7 @@ class Sceen {
 
   // MAIN DRAW SCEEN 
   void render() {
-   
+
     ArrayList<DObject> selectedPoints;
 
     // DRAW BUTTONS
@@ -64,16 +64,14 @@ class Sceen {
         // MOUSE PRESSED
         if (ui.mPressed) {
           PVector mC = views[i].getMouseCoordsFor(mouseX, mouseY);
-
+     
           // ADD VELOCITY VECTOR
-         if (ui.pressed[16] && lastSelected!=null)
+          if (ui.pressed[16] && lastSelected!=null) // [16] = SHIFT
           {
-         if (velocityButton.selected && !drawPointButton.selected)
-             { // [16] SHIFT
-              lastSelected.setVelocity(mC);
-           
+            if (velocityButton.selected && !drawPointButton.selected)
+            { 
+              lastSelected.setVelocity((mC.sub(lastSelected.pos)));
             }
-
           } else {
 
             // SELECT OBJECT
@@ -83,10 +81,15 @@ class Sceen {
             }
             // ADD OBJECT
             if (drawPointButton.selected) {
-              if (selectedPoints.size()<=0) {
-                points.addPointAt(new PVector(mC.x, mC.y));
+              if (!ui.pressed[81]) {
+                if (selectedPoints.size()<=0) {
+                  points.addPointAt(new PVector(mC.x, mC.y));
+                }
+              } else {
+                if (lastSelected!=null) 
+                  lastSelected.setPointAt(mC);
               }
-            }
+            } 
             if (deletePointButton.selected) {
               points.deletedSelected();
             }

@@ -12,25 +12,27 @@ class DObject {
     pos = new PVector(0, 0);
     // ADD 1st vector for velocity
     obejctVectorlist = new ArrayList<DVector>();
-    obejctVectorlist.add(new DVector());
+    obejctVectorlist.add(new DVector(pos));
   }
 
   DObject(float x, float y) {
     pos = new PVector(x, y);
       // ADD 1st vector for velocity
       obejctVectorlist = new ArrayList<DVector>();
-    obejctVectorlist.add(new DVector());
+    obejctVectorlist.add(new DVector(0,0));
   }
 
   DObject(PVector pv) {
     pos = pv;
       // ADD 1st vector for velocity
       obejctVectorlist = new ArrayList<DVector>();
-    obejctVectorlist.add(new DVector());
+    obejctVectorlist.add(new DVector(0,0));
   }
   
   PVector getVelocity(){
-    return obejctVectorlist.get(0);
+    PVector vel = obejctVectorlist.get(0);
+   // println("Velocity mag = "+vel.mag()+" coords ="+vel.toString());
+    return vel;
   }
   
   void setVelocity(PVector v){
@@ -38,8 +40,8 @@ class DObject {
     obejctVectorlist.get(0).y = v.y;
   }
 
-  void setPointAt(PVector pos) {
-    this.pos=pos;
+  void setPointAt(PVector mpos) {
+    this.pos=mpos;
   }
 
   float distanceTo(PVector q) {
@@ -48,9 +50,11 @@ class DObject {
     return sqrt(dx*dx+dy*dy);
   }
   
+ 
+  
   void renderPoint(PGraphicsJava2D rendererSceen){
     rendererSceen.ellipse(pos.x, pos.y, 10, 10);
-    if (getVelocity().mag()>0) {
+    if (abs(getVelocity().mag()-pos.mag())>3) {
      ((DVector)getVelocity()).render(renderer,pos, black);
     }
   } 

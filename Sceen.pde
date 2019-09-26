@@ -9,6 +9,7 @@ class Sceen {
   Button saveButton;
   Button loadButton;
   Button velocityButton;
+  DObject lastSelected= null;
   UI ui;
 
   Sceen(PGraphicsJava2D renderer, UI ui) {
@@ -49,7 +50,9 @@ class Sceen {
 
   // MAIN DRAW SCEEN 
   void render() {
-    DObject lastSelected= null;
+   
+    ArrayList<DObject> selectedPoints;
+
     // DRAW BUTTONS
     buttonrender();
 
@@ -63,34 +66,30 @@ class Sceen {
           PVector mC = views[i].getMouseCoordsFor(mouseX, mouseY);
 
           // ADD VELOCITY VECTOR
-          if (velocityButton.selected && !drawPointButton.selected && lastSelected!=null) {
-            if (ui.pressed[16]) { // [16] SHIFT
+         if (ui.pressed[16] && lastSelected!=null)
+          {
+         if (velocityButton.selected && !drawPointButton.selected)
+             { // [16] SHIFT
               lastSelected.setVelocity(mC);
+           
             }
-            //println("Add vel");
+
           } else {
-            //println("Don't Add vel");
-          }
 
-          // SELECT ONJECT
-          ArrayList<DObject>  selectedPoints = points.testPointsforSelected(mC);
-          if (selectedPoints.size()>0) {
-            lastSelected = selectedPoints.get(selectedPoints.size()-1);
-          }
-
-
-
-
-
-
-          if (drawPointButton.selected) {
-            if (selectedPoints.size()<=0) {
-              points.addPointAt(new PVector(mC.x, mC.y));
+            // SELECT OBJECT
+            selectedPoints = points.testPointsforSelected(mC);
+            if (selectedPoints.size()>0) {
+              lastSelected = selectedPoints.get(selectedPoints.size()-1);
             }
-          }
-
-          if (deletePointButton.selected) {
-            points.deletedSelected();
+            // ADD OBJECT
+            if (drawPointButton.selected) {
+              if (selectedPoints.size()<=0) {
+                points.addPointAt(new PVector(mC.x, mC.y));
+              }
+            }
+            if (deletePointButton.selected) {
+              points.deletedSelected();
+            }
           }
         } // END OF MOUSE PRESSED
       } else {

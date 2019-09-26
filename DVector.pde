@@ -23,13 +23,13 @@ class DVector extends PVector{
   }
   
   
-  void render(PGraphicsJava2D renderer, color c) {
+  void render(PGraphicsJava2D renderer,PVector pos, color c) {
     
     this.c = c;
     if (mag()>2)  {
       strokeWeight(2);
       stroke(c);
-      pointer(renderer,0,0,x, y);
+      pointer(renderer,pos.x, pos.y,x,y);
     }
   }
   

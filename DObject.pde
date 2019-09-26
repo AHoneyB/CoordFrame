@@ -51,7 +51,7 @@ class DObject {
   void renderPoint(PGraphicsJava2D rendererSceen){
     rendererSceen.ellipse(pos.x, pos.y, 10, 10);
     if (getVelocity().mag()>0) {
-     ((DVector)getVelocity()).render(renderer, black);
+     ((DVector)getVelocity()).render(renderer,pos, black);
     }
   } 
   

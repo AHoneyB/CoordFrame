@@ -3,6 +3,7 @@ class UI{
   PApplet app;
   PVector mouseCoords;
   boolean mPressed, mRelesed;
+  boolean mLeft, mRight;
   boolean[] pressed = new boolean[256];
 
   UI(PApplet papp){

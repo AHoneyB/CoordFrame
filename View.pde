@@ -1,12 +1,16 @@
 class View {
-  Rectangle viewRect;
+ 
+  PVector origin;
   float tX, tY;
   float rot;
-  PVector origin;
+  
+  Rectangle viewRect;
   color c;
   PGraphicsJava2D rendererSceen;
   boolean focus;
   Sceen sceen;
+  boolean originToPoint;
+  PVector originThisPoint;
 
   View(Sceen sceen, Rectangle viewRect, color c) {
     this.sceen = sceen;
@@ -16,6 +20,8 @@ class View {
     tY =0;
     origin = new PVector(viewRect.x+sceen.rect.w/2+tX, viewRect.y+sceen.rect.h/2+tY);
     rot =0;
+    originToPoint =false;
+    originThisPoint = origin.copy();
   }
 
   //  --- MOUSE VIEW ---
@@ -53,7 +59,7 @@ class View {
     rendererSceen.pushMatrix();
     rendererSceen.translate(origin.x, origin.y);
     rendererSceen.rotate(radians(rot));
-
+    
     pushStyle();
     noFill();
     stroke(orange);
@@ -107,6 +113,7 @@ class View {
   }
 
   void translateView() {
+  
     if (ui.pressed[38]) {
       tY--;
     }   // w [87] UP
@@ -123,7 +130,19 @@ class View {
     tX = t.x; 
     tY = t.y;
     // MOVE COORDS
-    origin.set(viewRect.x+sceen.rect.w/2+tX, viewRect.y+sceen.rect.h/2+tY);
+    moveCoords();
+  }
+  
+  void setTransTo(PVector loc){
+      //tX = -loc.x;
+      //tY = -loc.y;
+      tX = viewRect.w/2-sceen.rect.w/2-loc.x;
+      tY = viewRect.h/2-sceen.rect.h/2-loc.y;
+      moveCoords();
+  }
+  
+  void moveCoords(){
+   origin.set(viewRect.x+sceen.rect.w/2+tX, viewRect.y+sceen.rect.h/2+tY);
   }
 
 
@@ -139,4 +158,7 @@ class View {
   float floorMod(float a, float b) {
     return a - b * floor(a / b);
   }
+   
+
+  
 }

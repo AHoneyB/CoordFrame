@@ -10,7 +10,7 @@ void setup(){
   ui = new UI(this);
   renderer = (PGraphicsJava2D)g;
   sceen = new Sceen(renderer,ui);
-  
+  //frameRate(10);
 }
 
 void draw(){
@@ -21,6 +21,15 @@ void draw(){
 
 void mousePressed(){
   ui.setMPressed(true);
+  if (mouseButton == LEFT) {
+  ui.mLeft =true;
+  ui.mRight =false;
+  }
+   if (mouseButton == RIGHT) {
+  ui.mLeft =false;
+  ui.mRight =true;
+  }
+  
 }
 
 void mouseReleased(){
@@ -42,3 +51,4 @@ color orange = color(255,180,100);
 color yellow = color(255,255,0);
 color backGround = color(220);
 color green = color(0,255,0);
+color purple = color(147,112,219);

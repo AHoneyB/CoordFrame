@@ -4,6 +4,7 @@ class DObjectList {
   ArrayList<DObject> selectedPoints;
   float sensivity = 3;
 
+
   DObjectList() {
     objList = new ArrayList<DObject>();
     selectedPoints = new ArrayList<DObject>();
@@ -48,5 +49,22 @@ class DObjectList {
       }
     }
     return selectedPoints;
+  }
+
+  void objectsDoAddList() {
+    for (int i=0; i<objList.size(); i++) {
+      objList.get(i).addObejctVectorlist();
+    }
+  }
+
+  void setRelVelocities(DObject lastSelected) {
+
+    PVector v = lastSelected.getVelocity().copy();
+    for (int i=0; i<objList.size(); i++) {
+      PVector t=objList.get(i).getVelocity();
+      PVector w =objList.get(i).getVelocity();
+      w.sub(v);
+      objList.get(i).setVelocity(w);
+    }
   }
 }

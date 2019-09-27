@@ -11,6 +11,8 @@ class Sceen {
   Button deletePointButton ;
   Button selectButton ;
   Button velocityButton ;
+  Button moveButton ;
+  float time;
 
   Sceen(PGraphicsJava2D renderer, UI ui) {
     this.ui =ui;
@@ -25,6 +27,7 @@ class Sceen {
     views[1] = new View(this, new Rectangle(100, 220, 600, 500), blue);
 
     points = new DObjectList();
+    time =0;
   }
 
   void setupButtonPanel() {
@@ -32,12 +35,15 @@ class Sceen {
     deletePointButton = new Button( ui, new Rectangle(5, 55, 50, 50), orange);
     selectButton = new Button( ui, new Rectangle(5, 105, 50, 50), green);
     velocityButton = new Button( ui, new Rectangle(5, 155, 50, 50), blue);
+    moveButton = new Button( ui, new Rectangle(5, 205, 50, 50), purple);
+
     addPointButton.selected = true; 
     selectButton.toggleAble = true; 
     buttonPanel.add(addPointButton);
     buttonPanel.add(deletePointButton);
     buttonPanel.add(selectButton);
     buttonPanel.add(velocityButton);
+    buttonPanel.add(moveButton);
   }
 
 
@@ -50,7 +56,7 @@ class Sceen {
     // DRAW BUTTONS
     buttonPanel.buttonrender();
     buttonPanel.buttonPushed();
-    
+
     // DRAW VIEWS
     for (int i=0; i<views.length; i++) { 
       if (views[i].mouseInViewBoundry(mouseX, mouseY)) {
@@ -61,7 +67,7 @@ class Sceen {
           PVector mC = views[i].getMouseCoordsFor(mouseX, mouseY);
 
           // ADD VELOCITY VECTOR
-          if (ui.pressed[16] && lastSelected!=null) // [16] = SHIFT
+          if (ui.mRight && lastSelected!=null) 
           {
             if (velocityButton.selected)
             { 
@@ -69,12 +75,18 @@ class Sceen {
             }
           }
 
-          // SELECT OBJECT
+          // Move object to new selected point
           if (selectButton.selected || deletePointButton.selected) {
-           if (ui.pressed[16] && lastSelected!=null ) {
-           
-                  lastSelected.setPointAt(mC);
+            if ( ui.pressed[16] && lastSelected!=null && !velocityButton.selected) {
+              lastSelected.setPointAt(mC);
             }
+
+            // Set relative velocity KEY [86] = V
+            if ( ui.pressed[86] && lastSelected!=null && !velocityButton.selected) {
+
+              points.setRelVelocities( lastSelected);
+            }
+
             selectedPoints = points.testPointsforSelected(mC);
             if (selectedPoints.size()>0) {
               lastSelected = selectedPoints.get(selectedPoints.size()-1);
@@ -86,18 +98,28 @@ class Sceen {
             }
           }
 
-          // ADD OBJECT
+          // ADD POINT
           if (addPointButton.selected) {
             if (selectedPoints==null && !points.closeTo(mC)) {
               points.addPointAt(new PVector(mC.x, mC.y));
-            } 
+            }
           }
-          
-          
         } // END OF MOUSE PRESSED
-      } else {
+      } // END IN VIEW FOCUS
+      else {      
         views[i].focus =false;
       } // End of mouse in view
+
+      // MOVE OBJECT 
+      if (moveButton.selected) {
+        points.objectsDoAddList();
+        // Set object to center of view KEY [67] = C
+            if ( ui.pressed[67] && lastSelected!=null) {
+              //println("lastSelected.pos = "+lastSelected.pos.x+","+lastSelected.pos.y);
+              views[i].setTransTo(lastSelected.pos);
+          
+            }
+      }
 
 
       if (views[i].focus) {
@@ -114,5 +136,8 @@ class Sceen {
       views[i].renderObjects(renderer, points);
       views[i].renderBoundry();
     } // End of Render all views
+
+    time ++;
+    if (time>=MAX_FLOAT) time=0;
   }
 }

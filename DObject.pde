@@ -1,34 +1,36 @@
 class DObject {
 
   PVector pos;
-  ArrayList<DVector> obejctVectorlist;
+  ArrayList<PVector> objectVectorlist;
   boolean selected;
+  float scaleOfSum = 0.01;
+  float limitMag = 50;
   //PVector vel;
   //PVector acc;
  
   DObject() {
     pos = new PVector(0, 0);
     // ADD 1st vector for velocity
-    obejctVectorlist = new ArrayList<DVector>();
-    obejctVectorlist.add(new DVector(pos));
+    objectVectorlist = new ArrayList<PVector>();
+    objectVectorlist.add(new DVector(pos));
   }
 
   DObject(float x, float y) {
     pos = new PVector(x, y);
       // ADD 1st vector for velocity
-    obejctVectorlist = new ArrayList<DVector>();
-    obejctVectorlist.add(new DVector(0,0));
+    objectVectorlist = new ArrayList<PVector>();
+    objectVectorlist.add(new DVector(0,0));
   }
 
   DObject(PVector pv) {
     pos = pv;
       // ADD 1st vector for velocity
-      obejctVectorlist = new ArrayList<DVector>();
-    obejctVectorlist.add(new DVector(0,0));
+      objectVectorlist = new ArrayList<PVector>();
+    objectVectorlist.add(new DVector(0,0));
   }
   
   PVector getVelocity(){
-    PVector vel = obejctVectorlist.get(0);
+    PVector vel = objectVectorlist.get(0);
     //println("Velocity mag = "+vel.mag()+" coords ="+vel.toString());
     //println("POSition mag = "+pos.mag()+" coords ="+pos.toString());
     //println();
@@ -36,12 +38,15 @@ class DObject {
   }
   
   void setVelocity(PVector v){
-    obejctVectorlist.get(0).x = v.x;
-    obejctVectorlist.get(0).y = v.y;
+   
+    objectVectorlist.get(0).x = v.x;
+    objectVectorlist.get(0).y = v.y;
   }
+  
+ 
 
   void setPointAt(PVector mpos) {
-    PVector dif = (mpos.copy()).sub(pos);
+    //PVector dif = (mpos.copy()).sub(pos);
     this.pos=mpos;
   }
 
@@ -58,5 +63,19 @@ class DObject {
      ((DVector)getVelocity()).render(renderer,pos, black);
     }
   } 
+  
+  void addObejctVectorlist(){
+    //println("Moved selected");
+    PVector temp = new PVector(0,0);
+    PVector v= new PVector(0,0);
+    for (int i=0;i<objectVectorlist.size();i++){
+      v =((PVector)objectVectorlist.get(i)).copy();
+      v.mult(scaleOfSum);
+      temp.add(v);
+    }
+       //println("v ="+v.mag());
+       temp.limit(limitMag);
+       pos.add(temp);
+  }
 
 }

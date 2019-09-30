@@ -86,8 +86,9 @@ class Sceen {
 
               points.setRelVelocities( lastSelected);
             }
-
+            // SELECT CLOSEST POINTS
             selectedPoints = points.testPointsforSelected(mC);
+            views[i].setSelectedPoints(selectedPoints);
             if (selectedPoints.size()>0) {
               lastSelected = selectedPoints.get(selectedPoints.size()-1);
             }

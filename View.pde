@@ -11,6 +11,7 @@ class View {
   Sceen sceen;
   boolean originToPoint;
   PVector originThisPoint;
+  ArrayList<DObject> selectedPoints;
 
   View(Sceen sceen, Rectangle viewRect, color c) {
     this.sceen = sceen;
@@ -22,6 +23,7 @@ class View {
     rot =0;
     originToPoint =false;
     originThisPoint = origin.copy();
+    selectedPoints = new ArrayList<DObject>();
   }
 
   //  --- MOUSE VIEW ---
@@ -159,6 +161,9 @@ class View {
     return a - b * floor(a / b);
   }
    
-
+  void setSelectedPoints(ArrayList<DObject> selectedPs){
+    selectedPoints.clear();
+    selectedPoints.addAll(0,selectedPs);
+  }
   
 }
